@@ -61,7 +61,6 @@ function preprocessHTML(inputHTML) {
       }
     `)
     .replace(/class="two-columns">/g, 'class="two-columns" style="display: block; max-width: 100%;">')
-
     .replace(/class="two-columns" style="(.*?)"/g, 'class="two-columns" style="display: block; max-width: 100%;$1"')
 
     .replace(/<preheader>(.*?)<\/preheader>/, '<div style="font-size: 0px;color: #000000;line-height: 1px;mso-line-height-rule: exactly;display: none;max-width: 0px;max-height: 0px;opacity: 0;overflow: hidden;mso-hide: all;">$1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>')
@@ -96,7 +95,13 @@ function preprocessHTML(inputHTML) {
 
     modifiedHTML = modifyElementStyles(modifiedHTML, 'a', 'padding: 0;text-decoration: none;color: inherit; font-size: inherit;')
 
-    modifiedHTML = modifiedHTML.replace(/<button\s+href="(.*?)"\s+style="(.*?)">(.*?)<\/button>/g, '<table border="0" cellspacing="0" cellpadding="0" role="presentation" style="width: auto; height: auto;"><tr><td><a href="$1" target="_blank" style="display: inline-block;padding: 0;text-decoration: none;color: inherit; font-size: inherit;$2">$3</a></td></tr></table>');
+    modifiedHTML = modifiedHTML.replace(/<button\s+href="(.*?)"\s+style="(.*?)">(.*?)<\/button>/g, '<table border="0" cellspacing="0" cellpadding="0" role="presentation" style="width: auto; height: auto;cursor:pointer;"><tr><td><a href="$1" target="_blank" style="display: inline-block;padding: 0;text-decoration: none;color: inherit; font-size: inherit;$2">$3</a></td></tr></table>');
+
+    modifiedHTML = modifiedHTML.replace(/<button\s+style="(.*?)"\s+href="(.*?)">(.*?)<\/button>/g, '<table border="0" cellspacing="0" cellpadding="0" role="presentation" style="width: auto; height: auto;cursor:pointer;"><tr><td><a href="$1" target="_blank" style="display: inline-block;padding: 0;text-decoration: none;color: inherit; font-size: inherit;$2">$3</a></td></tr></table>');
+
+    modifiedHTML = modifiedHTML.replace(/<button\s+class="(.*?)"\s+href="(.*?)"\s+style="(.*?)">(.*?)<\/button>/g, '<table border="0" cellspacing="0" cellpadding="0" role="presentation" style="width: auto; height: auto;cursor:pointer;"><tr><td><a href="$2" target="_blank" class="$1" style="display: inline-block;padding: 0;text-decoration: none;color: inherit; font-size: inherit;$3">$4</a></td></tr></table>');
+
+    modifiedHTML = modifiedHTML.replace(/<button\s+style="(.*?)"\s+class="(.*?)"\s+href="(.*?)">(.*?)<\/button>/g, '<table border="0" cellspacing="0" cellpadding="0" role="presentation" class="$2" style="width: auto; height: auto;cursor:pointer;"><tr><td><a href="$3" target="_blank" class="$2" style="display: inline-block;padding: 0;text-decoration: none;color: inherit; font-size: inherit;$1">$4</a></td></tr></table>');
 
 
 
