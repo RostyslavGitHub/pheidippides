@@ -63,10 +63,6 @@ This script is designed to optimize HTML tags for compatibility and styling cons
 Introduces `<preheader></preheader>` to display supplementary information beside the subject line in email clients.
 
 ### #nullstyle{}
-By incorporating #nullstyle{} into your style tag, you standardize null styles for various elements:
-Sure, here's the CSS code explained in plain text:
-
-### #nullstyle{}
 
 This block of CSS provides standard null styles for different elements:
 
