@@ -63,8 +63,7 @@ This script is designed to optimize HTML tags for compatibility and styling cons
 Introduces `<preheader></preheader>` to display supplementary information beside the subject line in email clients.
 
 ### #nullstyle{}
-
-This block of CSS provides standard null styles for different elements:
+By incorporating this optional block of CSS into the style tag, you establish standard null styles for various elements:
 
 **Images:**
 Images will have no borders, ensuring they seamlessly integrate into the layout. Their interpolation mode is set to bicubic for smoother rendering, and their maximum width is restricted to 100% of their container to maintain responsiveness.
