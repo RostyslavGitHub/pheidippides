@@ -2,21 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=, initial-scale=1.0">
     <title>Document</title>
     <style type="text/css">
-        /* <nullstyle> */
-        @media screen and (min-width: 599px) {
-            .two-columns{
-                display: table-cell !important;
-                max-width: 300px !important;
-                width: 300px !important;
-            }
-            .three-columns{
-                display: table-cell !important;
-                max-width: 200px !important;
-                width: 200px !important;
-            }
+       
+        #nullstyle{}
+
+        @media (min-width: 599px) {
+            {#columns}
+
         }
     </style>
 </head>
@@ -27,7 +20,14 @@
             <preheader></preheader>
 
             <table style="margin: 0; padding: 0; font-style: normal; font-size: 16px; color: #1C1E23;">
-            
+            <tr>
+                <td style="color: #1C1E23;" class="two-columns">
+                    column1
+                </td>
+                <td class="two-columns">
+                    column2
+                </td>
+            </tr>
             </table>
         </div>
     </center>
