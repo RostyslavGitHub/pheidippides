@@ -1,12 +1,10 @@
 const fs = require('fs');
 const cheerio = require('cheerio');
-
-const inputFilePath = 'input.html';
-const outputFilePath = 'index.html';
+let HTMLEmail = require('./HTMLEmail');
+let Styles = require('./Styles');
 
 function replaceHTML(inputHTML) {
   return inputHTML
-    .replace(/<preheader>\s*(.*?)\s*<\/preheader>/, '<div style="font-size:0px;line-height:1px;mso-line-height-rule:exactly;display:none;max-width:0px;max-height:0px;opacity:0;overflow:hidden;mso-hide:all;">$1 &nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>')
     .replace(/#nullstyle\s*{\s*(.*?)\s*}/gs, `
     img {
       border: none;
@@ -40,133 +38,88 @@ function replaceHTML(inputHTML) {
       font-size: inherit;
       font-weight: normal;
     }
-    $1
-  `)
-  .replace(/{#columns}/g, `
-    .two-columns{
-        display: table-cell !important;
-        max-width: 300px !important;
-        width: 300px !important;
-    }
-    .three-columns{
-        display: table-cell !important;
-        max-width: 200px !important;
-        width: 200px !important;
-    }`);
+    $1`)
+    .replace(/{#columns}/g, `
+      .two-columns{
+          display: table-cell !important;
+          max-width: 300px !important;
+          width: 300px !important;
+      }
+      .three-columns{
+          display: table-cell !important;
+          max-width: 200px !important;
+          width: 200px !important;
+      }`);
 }
-function preprocessHTML(inputHTML) {
+
+function preprocessHTML(inputHTML, inputStyles) {
   let modifiedHtml = replaceHTML(inputHTML);
   const $ = cheerio.load(modifiedHtml);
 
-  // <html>
-  $('html').attr('xmlns:v', 'urn:schemas-microsoft-com:vml');
-  $('html').attr('xmlns:o', 'urn:schemas-microsoft-com:office:office');
+  const styles = {
+    'p': {
+      'margin': '0',
+      'padding': '0',
+      'color': 'inherit',
+      'font-size': 'inherit',
+      'font-style': 'inherit',
+      'font-weight': 'inherit'
+    },
+    'a': {
+      'padding': '0',
+      'text-decoration': 'none',
+      'color': 'inherit',
+      'font-size': 'inherit'
+    },
+    'img': {
+      'margin': '0',
+      'padding': '0',
+      'width': '100%',
+      'text-decoration': 'none',
+      '-ms-interpolation-mode': 'bicubic',
+      'height': 'auto',
+      'border': '0',
+      'line-height': '0',
+      'display': 'block'
+    },
+    'h1, h2, h3, h4, h5, h6': {
+      'margin': '0',
+      'padding': '0',
+      'color': 'inherit',
+      'font-size': 'inherit',
+      'font-style': 'inherit',
+      'font-weight': 'inherit'
+    }
+  };
 
-  // <head>
-  const head = $('head');
-
-  head.prepend('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
-  head.prepend('<meta http-equiv="X-UA-Compatible" content="IE=edge">');
-
-  // <body>
-  $('body').each(function() {
-    const $this = $(this);
-    const existingStyles = $this.attr('style') || '';
-    const newStyles = {
-        'margin': '0',
-        'padding': '0',
-        'min-width': '100%'
-    };
-    const mergedStyles = mergeStyles(newStyles, cssToObject(existingStyles));
-    $this.attr('style', stylesToCss(mergedStyles));
+  // Apply styles
+  Object.keys(styles).forEach(selector => {
+    $(selector).each(function() {
+      const $this = $(this);
+      const existingStyles = $this.attr('style') || '';
+      const mergedStyles = Object.assign({}, styles[selector], cssToObject(existingStyles));
+      $this.attr('style', stylesToCss(mergedStyles));
+    });
   });
 
-  // <table>
+  // Modify specific elements
   $('table').attr('border', '0').attr('cellspacing', '0').attr('cellpadding', '0').attr('role', 'presentation');
-
-  // <p>
-  $('p').each(function() {
-    const $this = $(this);
-    const existingStyles = $this.attr('style') || '';
-    const newStyles = {
-        'margin': '0',
-        'padding': '0',
-        'color': 'inherit',
-        'font-size': 'inherit',
-        'font-style': 'inherit',
-        'font-weight': 'inherit'
-    };
-    const mergedStyles = mergeStyles(newStyles, cssToObject(existingStyles));
-    $this.attr('style', stylesToCss(mergedStyles));
-  });
-
-  // <a>
-  $('a').each(function() {
-    const $this = $(this);
-    const existingStyles = $this.attr('style') || '';
-    const newStyles = {
-        'padding': '0',
-        'text-decoration': 'none',
-        'color': 'inherit',
-        'font-size': 'inherit'
-    };
-    const mergedStyles = mergeStyles(newStyles, cssToObject(existingStyles));
-    $this.attr('style', stylesToCss(mergedStyles)).attr('target', '_blank');
-  });
-
-  // <img>
-  $('img').each(function() {
-    const $this = $(this);
-    const existingStyles = $this.attr('style') || '';
-    const newStyles = {
-        'margin': '0',
-        'padding': '0',
-        'width': '100%',
-        'text-decoration': 'none',
-        '-ms-interpolation-mode': 'bicubic',
-        'height': 'auto',
-        'border': '0',
-        'line-height': '0',
-        'display': 'block'
-    };
-    const mergedStyles = mergeStyles(newStyles, cssToObject(existingStyles));
-    $this.attr('style', stylesToCss(mergedStyles)).attr('border', '0');
-  });
-
-  // <h1-6>
-  $('h1, h2, h3, h4, h5, h6').each(function() {
-    const $this = $(this);
-    const existingStyles = $this.attr('style') || '';
-    const newStyles = {
-        'margin': '0',
-        'padding': '0',
-        'color': 'inherit',
-        'font-size': 'inherit',
-        'font-style': 'inherit',
-        'font-weight': 'inherit'
-    };
-    const mergedStyles = mergeStyles(newStyles, cssToObject(existingStyles));
-    $this.attr('style', stylesToCss(mergedStyles));
-  });
-
-  $('td.two-columns').css('display', 'block').css('max-width', '100%')
+  $('a').attr('target', '_blank');
+  $('img').attr('border', '0');
+  $('td.two-columns').css('display', 'block').css('max-width', '100%');
 
   return $.html();
 }
 
-function mergeStyles(newStyles, existingStyles) {
-  return Object.assign({}, newStyles, existingStyles);
-}
-
 function cssToObject(css) {
-    var obj = {};
-    css.split(';').forEach(function(property) {
-        var keyValue = property.split(':');
-        if (keyValue.length === 2) {
-            obj[keyValue[0].trim()] = keyValue[1].trim();
-        }
-    });
-    return obj;
+  var obj = {};
+  css.split(';').forEach(function(property) {
+    var keyValue = property.split(':');
+    if (keyValue.length === 2) {
+      obj[keyValue[0].trim()] = keyValue[1].trim();
+    }
+  });
+  return obj;
 }
 
 function stylesToCss(styles) {
@@ -175,38 +128,51 @@ function stylesToCss(styles) {
     .join(';');
 }
 
+const outputFilePath = 'index.html';
 
+function writeIndexHTML() {
+  try {
+    delete require.cache[require.resolve('./HTMLEmail')];
+    HTMLEmail = require('./HTMLEmail');
 
-function replaceDoctype(inputHTML) {
-  return inputHTML.replace(
-      /<!DOCTYPE html[^>]*>/i, 
-      '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'
-  );
-}
+    delete require.cache[require.resolve('./Styles')];
+    Styles = require('./Styles');
 
-function preprocessAndSave(inputFilePath, outputFilePath) {
-  fs.readFile(inputFilePath, 'utf-8', (err, data) => {
-      if (err) {
-          console.error('Error reading input file:', err);
-          return;
-      }
-      
-      let modifiedData = preprocessHTML(data); 
-      modifiedData = replaceDoctype(modifiedData); 
+    const inputHTMLData = HTMLEmail();
+    const inputStyles = Styles();
+    const inputHTML = `
+      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+      <html lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+          <head>
+              <meta http-equiv="X-UA-Compatible" content="IE=edge">
+              <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+              <style id="style">${inputStyles}</style>
 
-      fs.writeFile(outputFilePath, modifiedData, (err) => {
-          if (err) {
-              console.error('Error writing output file:', err);
-          }
-      });
-  });
-}
+          </head>
+          ${inputHTMLData} 
+      </html>
+    `;
 
-preprocessAndSave(inputFilePath, outputFilePath);
+    const modifiedHTML = preprocessHTML(inputHTML, inputStyles);
 
-console.log('Watching for changes in the input file. Press Ctrl+C to exit.');
-fs.watch(inputFilePath, (eventType, filename) => {
-  if (eventType === 'change') {
-    preprocessAndSave(inputFilePath, outputFilePath);
+    fs.writeFileSync(outputFilePath, modifiedHTML); // Using synchronous writeFile to ensure completion before logging success message
+    console.log('File has been written successfully!');
+  } catch (error) {
+    console.error('An error occurred during HTML preprocessing:', error);
   }
+}
+
+writeIndexHTML();
+
+fs.watchFile('./HTMLEmail.js', (curr, prev) => {
+  console.log('HTMLEmail.js has changed. Rendering index.html...');
+  writeIndexHTML();
 });
+
+fs.watchFile('./Styles.js', (curr, prev) => {
+  console.log('Styles.js has changed. Rendering index.html...');
+  writeIndexHTML();
+});
+
+console.log('Watching for changes in HTMLEmail.js. Press Ctrl+C to exit.');
