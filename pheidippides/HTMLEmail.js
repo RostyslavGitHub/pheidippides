@@ -1,6 +1,8 @@
 const HTMLEmail = () => {
    return `
+   <body style="color: red;">
    
+   </body>
    `
   };
   
