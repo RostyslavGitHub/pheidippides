@@ -25,9 +25,6 @@ Optimizes HTML tags for compatibility and styling consistency across email clien
 - **Image Tag (`<img>`):** Resets margins and padding, removes border, adjusts image display properties.
 - **Heading Tags (`<h1>` to `<h6>`):** Resets margins, padding and font properties.
 
-### #nullstyle{}
-This optional CSS block establishes null styles for elements like images, tables, links, headings, and paragraphs. <br />
-You can add custon nullstyles as needed within the curly braces.
 
 ### Preheader Tag
 Introduces `<preheader></preheader>` to display supplementary information beside the subject line in email clients.
