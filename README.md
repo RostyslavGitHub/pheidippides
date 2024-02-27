@@ -26,8 +26,3 @@ Optimizes HTML tags for compatibility and styling consistency across email clien
 - **Heading Tags (`<h1>` to `<h6>`):** Resets margins, padding and font properties.
 
 
-### Preheader Tag
-Introduces `<preheader></preheader>` to display supplementary information beside the subject line in email clients.
-
-
-
