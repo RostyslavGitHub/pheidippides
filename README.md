@@ -1,6 +1,7 @@
 # Pheidippides: Email Markup Preprocessor
 
-Pheidippides is a preprocessor to increase the speed of creating professional HTML emails.
+Pheidippides is a framework for HTML emails that introduces JavaScript functionality. 
+This feature helps in designing complicated email flows.
 
 ## Key Features
 
