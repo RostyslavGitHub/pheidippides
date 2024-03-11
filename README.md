@@ -10,8 +10,8 @@ There are several files: <br />
 <ul>
 <li>HTMLEmail.js is for your markup.</li>
 <li>Styles.js is for your global styles.</li>
-<li>preprocess.js updates your JS files to index.html.</li>
-<li>index.html is the clean markup you ge from the input files.</li>
+<li>preprocess.js updates index.html from the input files.</li>
+<li>index.html is the clean markup you recive.</li>
 </ul>
 
 As you can see, using the .js extension for markup allows you to leverage the advantages of its language. <br />
