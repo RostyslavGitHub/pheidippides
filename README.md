@@ -4,7 +4,11 @@ Pheidippides is a framework for HTML emails that introduces JavaScript functiona
 This feature helps in designing complicated email flows.
 
 ## Functionality
-For a new project, you need to download the repository. <br /><br />
+For a new project, you need to download the repository and start the preprocess.js in console:
+```bash
+node preprocess.js
+```
+<br />
 There are several files: <br />
 
 <ul>
