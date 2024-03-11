@@ -20,7 +20,7 @@ There are several files: <br />
 
 As you can see, using the .js extension for markup allows you to leverage the advantages of its language. <br />
 The possibilities are limited only by your needs. Personally, I use it for reusable templates, changing variables, improving markup using map and filter methods, and so on. <br /> <br />
- Here are good exemple of regular usage of Pheidippides:
+ Here are good example of regular usage of Pheidippides:
 
 ```JavaScript
 const HTMLEmail = () => {
@@ -93,7 +93,7 @@ It adds necessary styles and attributes for some html tags:
       }
 ```
 
-PS: Do not worry, if you need to rewrite this rules. Pheidippides updates it according to your input.
+PS: Do not worry, if you need to rewrite any rules. Pheidippides updates it according to your input.
 
 ## Dependency
 
