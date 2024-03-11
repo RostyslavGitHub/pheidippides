@@ -8,9 +8,9 @@ For a new project, you need to download the repository. <br /><br />
 There are several files: <br />
 
 <ul>
-<li>HTMLEmail.js is for your markup.</li> <br />
-<li>Styles.js is for your global styles.</li> <br />
-<li>preprocess.js updates your JS files to index.html.</li> <br />
+<li>HTMLEmail.js is for your markup.</li>
+<li>Styles.js is for your global styles.</li>
+<li>preprocess.js updates your JS files to index.html.</li>
 <li>index.html is the clean markup.</li>
 </ul>
 
