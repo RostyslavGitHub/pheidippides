@@ -18,7 +18,7 @@ As you can see, using the .js extension for markup allows you to leverage the ad
 The possibilities are limited only by your needs. Personally, I use it for reusable templates, changing variables, improving markup using map and filter methods, and so on. <br /> <br />
  Here are good exemple of regular usage of Pheidippides:
 
-```
+```JavaScript
 const HTMLEmail = () => {
 
   const [header] = ['Hello']
