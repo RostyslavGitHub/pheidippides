@@ -89,6 +89,8 @@ It adds necessary styles and attributes for some html tags:
       }
 ```
 
+PS: Do not worry, if you need to rewrite this rules. Pheidippides updates it according to your input.
+
 ## Dependency
 
 However, to add these styles and attributes, we need **cheerio**. <br />
