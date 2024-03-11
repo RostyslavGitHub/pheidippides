@@ -56,3 +56,25 @@ const HTMLEmail = () => {
 module.exports = HTMLEmail;
 
 ```
+
+## Additional feature
+For this feature I started Pheidippides in the first place.<br />
+It adds necessary styles and attributes for some html tags:
+  - body: `margin: 0;padding: 0;min-width: 100%;`
+    Default styles to reset browser defaults and provide a clean base for styling.
+
+  - p: `margin: 0;padding: 0;color: inherit;font-family: inherit;font-size: inherit;font-style: inherit;font-weight: inherit;`
+    Default styles for paragraphs.
+
+  - a: `padding: 0;text-decoration: none;color: inherit;font-size: inherit;font-family: inherit;`
+    Default styles for links.
+
+  - img: `margin: 0;padding: 0;max-width: 100%;text-decoration: none;-ms-interpolation-mode: bicubic;border: 0;font-size: 0;line-height: 0;`
+    Default styles for images.
+
+  - `h1`, `h2`, `h3`, `h4`, `h5`, `h6`: `margin: 0;padding: 0;color: inherit;font-family: inherit;font-size: inherit;font-style: inherit;font-weight: inherit;`
+    - Default styles for headings.
+
+  - `.two-columns` and `.three-columns`: `display: block;max-width: 100%;`
+    - Default styles for multi-column layouts .
+
