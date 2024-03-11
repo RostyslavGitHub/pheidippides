@@ -62,14 +62,36 @@ For this feature I started Pheidippides in the first place.<br />
 It adds necessary styles and attributes for some html tags:
   - `body: margin: 0;padding: 0;min-width: 100%;`<br />
 
+  - `table: border: '0' cellspacing: '0' cellpadding: '0' role: 'presentation'`
+
   - `p: margin: 0;padding: 0;color: inherit;font-family: inherit;font-size: inherit;font-style: inherit;font-weight: inherit;`<br />
 
-  - `a: padding: 0;text-decoration: none;color: inherit;font-size: inherit;font-family: inherit;`<br />
+  - `a: padding: 0;text-decoration: none;color: inherit;font-size: inherit;font-family: inherit; target: '_blank'`<br />
 
-  - `img: margin: 0;padding: 0;max-width: 100%;text-decoration: none;-ms-interpolation-mode: bicubic;border: 0;font-size: 0;line-height: 0;`<br />
+  - `img: margin: 0;padding: 0;max-width: 100%;text-decoration: none;-ms-interpolation-mode: bicubic;border: 0;font-size: 0;line-height: 0; border: '0'`<br />
 
   - `h1, h2, h3, h4, h5, h6: margin: 0;padding: 0;color: inherit;font-family: inherit;font-size: inherit;font-style: inherit;font-weight: inherit;`<br />
 
   - `.two-columns and .three-columns: display: block;max-width: 100%;`<br />
-    - Default styles for multi-column layouts .
+    The last one is default styles for multi-column layouts. It works well with the folowing media-rules:
+```css
+ @media screen and (min-width:600px){
+        .two-columns{
+          display: table-cell !important;
+          max-width: 300px !important;
+          width: 300px !important;
+        }
+        .three-columns{
+            display: table-cell !important;
+            max-width: 200px !important;
+            width: 200px !important;
+        }
+      }
+```
 
+## Dependency
+
+However, to add these styles and attributes, we need **cheerio**. <br />
+Here is how to download the npm package:
+```bash
+npm install cheerio
